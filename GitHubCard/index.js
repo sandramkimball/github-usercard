@@ -1,47 +1,32 @@
 
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
+/* Step 2: Inspect and study the data coming back in order to build your component function.*/
 
-axios.get('https://api.github.com/sandramkimball').then(response=> {
-  console.log(response);
-  response.data.message.forEach(item =>{
-    const newUser = userCard(item);
-    cardSections.appendChild(newUser);
-  });
-})
-.catch(error => {
-  console.log(`Agh! Something's wrong.`, error)
-})
+/* Step 3: Create a function that accepts a single object as its only argument. Create a component to return the following:
 
-/* Step 2: Inspect and study the data coming back in order to use it to build your component function 
-
-   Skip to Step 3.
-*/
-
-/* Step 4: Pass the data received from Github into your function. 
-  Create a new component and add it to the DOM as a child of .cards
+<div class="card">
+  <img src={image url of user} />
+  <div class="card-info">
+    <h3 class="name"></h3>
+    <p class="username"></p>
+    <p>Location:</p>
+    <p>Profile:  
+      <a href={address to users github page}></a>
+    </p>
+    <p>Followers:</p>
+    <p>Following:</p>
+    <p>Bio:</p>
+  </div>
+</div>
 */
 
 
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
+const allUsers = document.querySelector('.cards')
 
 
-const followersArray = [];
-
-function userCard(obj){
-  const cardSection = document.querySelector('.cards');
-  let userImg = document.createElement('img');
+function userCard(object){
+  let cardSection = document.createElement('.card');
   let cardInfo = document.createElement('div');
+  let userImg = document.createElement('img');
   let cardName = document.createElement('h3');
   let userName = document.createElement('p')
   let userLocation = document.createElement('p');
@@ -57,6 +42,7 @@ function userCard(obj){
   userName.classList.add('username');
 
   //append
+  allUsers.appendChild(cardSection);
   cardSection.appendChild(userImg);
   cardSection.appendChild(cardInfo);
   cardInfo.appendChild(cardName);
@@ -67,34 +53,55 @@ function userCard(obj){
   cardInfo.appendChild(userFollowing);
   cardInfo.appendChild(userBio);
 
-  return cardSection
+  //text content
+  userFollowers.textContent = `Followers: ${object.data.followers}`;
+  userFollowing.textContent = `Following: ${object.data.following}`;
+  userBio.textContent = `${object.data.bio}`;
+  cardName.textContent = `${object.data.name}`;
+  userName.textContent = `${object.data.login}`;
+  userLocation.textContent = `${object.data.location}`;
+  userProfile.href = `${object.data.html_url}`;
+  userImg.textContent = `${object.data.avatar_url}`;
+
+  return cardSection;
 }
 
+// allUsers.appendChild(userCard())
 
-/* Step 3: Create a function that accepts a single object as its only argument,
-          Using DOM methods and properties, create a component to return the following:
 
-<div class="card">
-  <img src={image url of user} />
-  <div class="card-info">
-    <h3 class="name">{users name}</h3>
-    <p class="username">{users user name}</p>
-    <p>Location: {users location}</p>
-    <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
-    </p>
-    <p>Followers: {users followers count}</p>
-    <p>Following: {users following count}</p>
-    <p>Bio: {users bio}</p>
-  </div>
-</div>
 
+/* Step 1: using axios, send a GET request to the following URL: https://api.github.com/users/<your name> */
+
+axios.get(`https://api.github.com/users/sandramkimball`)
+
+.then( res => {
+  console.log(res);
+  for (let i = 0; i < res.data.length; i++) {
+    let newUser = userCard(item);
+    allUsers.appendChild(newUser);
+  }
+})
+
+.catch(error => {
+  console.log(`AGH!`, error)
+})
+
+
+// menu.appendChild(list); 
+
+
+
+/* Step 4: Pass the data received from Github into your function. 
+  Create a new component and add it to the DOM as a child of .cards
 */
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
+/* Step 5: Get at least 5 different Github usernames and add them as Individual strings to the friendsArray below. Using that array, iterate over it, requesting data for each, creating a new card to add to the DOM.
+          
+const followersArray = [
+  'tetondan'
+  'dustinmyers'
+  'justsml'
+  'luishrd'
+  'bigknell'
+];
 */
