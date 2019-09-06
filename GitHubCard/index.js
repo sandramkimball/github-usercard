@@ -1,5 +1,4 @@
 
-/* Step 2: Inspect and study the data coming back in order to build your component function.*/
 
 /* Step 3: Create a function that accepts a single object as its only argument. Create a component to return the following:
 
@@ -20,76 +19,87 @@
 */
 
 
-const allUsers = document.querySelector('.cards')
 
+const allUsers = document.querySelector('.cards');
 
-function userCard(object){
-  let cardSection = document.createElement('.card');
-  let cardInfo = document.createElement('div');
+function userCard(obj){
+  let userCard = document.createElement('div');
   let userImg = document.createElement('img');
+  let cardInfo = document.createElement('div');
   let cardName = document.createElement('h3');
   let userName = document.createElement('p')
   let userLocation = document.createElement('p');
   let userProfile = document.createElement('p');
+  let userProfileLink = document.createElement('a');
   let userFollowers = document.createElement('p');
   let userFollowing = document.createElement('p');
   let userBio = document.createElement('p');
 
   //classes
-  cardSection.classList.add('card');
+  userCard.classList.add('card');
   cardInfo.classList.add('card-info');
   cardName.classList.add('name');
   userName.classList.add('username');
 
+  //text content
+  userFollowers.textContent = `Followers: ${obj.data.followers}`;
+  userFollowing.textContent = `Following: ${obj.data.following}`;
+  userBio.textContent = `${obj.data.bio}`;
+  cardName.textContent = `${obj.data.name}`;
+  userName.textContent = `${obj.data.login}`;
+  userLocation.textContent = `${obj.data.location}`;
+  userProfileLink.href = `${obj.data.html_url}`;
+  userProfileLink.textContent = `${obj.data.html_url}`;
+  userImg.src = `${obj.data.avatar_url}`;
+
   //append
-  allUsers.appendChild(cardSection);
-  cardSection.appendChild(userImg);
-  cardSection.appendChild(cardInfo);
+  userCard.appendChild(userImg);
+  userCard.appendChild(cardInfo);
   cardInfo.appendChild(cardName);
   cardInfo.appendChild(userName);
   cardInfo.appendChild(userLocation);
   cardInfo.appendChild(userProfile);
+  userProfile.appendChild(userProfileLink);
   cardInfo.appendChild(userFollowers);
   cardInfo.appendChild(userFollowing);
   cardInfo.appendChild(userBio);
 
-  //text content
-  userFollowers.textContent = `Followers: ${object.data.followers}`;
-  userFollowing.textContent = `Following: ${object.data.following}`;
-  userBio.textContent = `${object.data.bio}`;
-  cardName.textContent = `${object.data.name}`;
-  userName.textContent = `${object.data.login}`;
-  userLocation.textContent = `${object.data.location}`;
-  userProfile.href = `${object.data.html_url}`;
-  userImg.textContent = `${object.data.avatar_url}`;
-
-  return cardSection;
+  return userCard;
 }
 
-// allUsers.appendChild(userCard())
+
+axios.get(`https://api.github.com/users/sandramkimball`)
+  .then( response => {
+    console.log(response);
+    response.data.forEach( item =>{
+      let newUser = userCard(item);
+      allUsers.appendChild(newUser);
+    })
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+
+
+
+// axios
+//   .get(`https://api.github.com/users/sandramkimball`)
+//   .then(response => {
+//     console.log(response);
+//     for (let i = 0; i < response.data.length; i++) {
+//       const newUser = userCard(response.data);
+//       allUsers.appendChild(newUser);
+//     }
+//   })
+//   .catch(error => {
+//     console.log(`AGH!`, error);
+//   });
+
+
 
 
 
 /* Step 1: using axios, send a GET request to the following URL: https://api.github.com/users/<your name> */
-
-axios.get(`https://api.github.com/users/sandramkimball`)
-
-.then( res => {
-  console.log(res);
-  for (let i = 0; i < res.data.length; i++) {
-    let newUser = userCard(item);
-    allUsers.appendChild(newUser);
-  }
-})
-
-.catch(error => {
-  console.log(`AGH!`, error)
-})
-
-
-// menu.appendChild(list); 
-
-
 
 /* Step 4: Pass the data received from Github into your function. 
   Create a new component and add it to the DOM as a child of .cards
@@ -98,10 +108,10 @@ axios.get(`https://api.github.com/users/sandramkimball`)
 /* Step 5: Get at least 5 different Github usernames and add them as Individual strings to the friendsArray below. Using that array, iterate over it, requesting data for each, creating a new card to add to the DOM.
           
 const followersArray = [
-  'tetondan'
-  'dustinmyers'
-  'justsml'
-  'luishrd'
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
   'bigknell'
 ];
 */
