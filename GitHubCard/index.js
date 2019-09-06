@@ -49,9 +49,10 @@ function userCard(obj){
   userName.textContent = `${obj.data.login}`;
   userLocation.textContent = `${obj.data.location}`;
   userProfileLink.href = `${obj.data.html_url}`;
-  userProfileLink.textContent = `${obj.data.html_url}`;
+  userProfileLink.textContent = `Profile: ${obj.data.html_url}`;
   userImg.src = `${obj.data.avatar_url}`;
 
+  userProfileLink.style.textDecoration = 'none';
   //append
   userCard.appendChild(userImg);
   userCard.appendChild(cardInfo);
@@ -71,10 +72,55 @@ function userCard(obj){
 axios.get(`https://api.github.com/users/sandramkimball`)
   .then( response => {
     console.log(response);
-    response.data.forEach( item =>{
-      let newUser = userCard(item);
-      allUsers.appendChild(newUser);
-    })
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+
+  axios.get(`https://api.github.com/users/tetondan`)
+  .then( response => {
+    console.log(response);
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+  axios.get(`https://api.github.com/users/dustinmyers`)
+  .then( response => {
+    console.log(response);
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+  axios.get(`https://api.github.com/users/justsml`)
+  .then( response => {
+    console.log(response);
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+  axios.get(`https://api.github.com/users/luishrd`)
+  .then( response => {
+    console.log(response);
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
+  })
+  .catch(error => {
+    console.log(`AGH!`, error);
+  });
+
+  axios.get(`https://api.github.com/users/bigknell`)
+  .then( response => {
+    console.log(response);
+    let newUser = userCard(response);
+    allUsers.appendChild(newUser);
   })
   .catch(error => {
     console.log(`AGH!`, error);
@@ -82,21 +128,13 @@ axios.get(`https://api.github.com/users/sandramkimball`)
 
 
 
-// axios
-//   .get(`https://api.github.com/users/sandramkimball`)
-//   .then(response => {
-//     console.log(response);
-//     for (let i = 0; i < response.data.length; i++) {
-//       const newUser = userCard(response.data);
-//       allUsers.appendChild(newUser);
-//     }
-//   })
-//   .catch(error => {
-//     console.log(`AGH!`, error);
-//   });
-
-
-
+// const followersArray = [
+//   'tetondan',
+//   'dustinmyers',
+//   'justsml',
+//   'luishrd',
+//   'bigknell'
+// ];
 
 
 /* Step 1: using axios, send a GET request to the following URL: https://api.github.com/users/<your name> */
@@ -107,11 +145,5 @@ axios.get(`https://api.github.com/users/sandramkimball`)
 
 /* Step 5: Get at least 5 different Github usernames and add them as Individual strings to the friendsArray below. Using that array, iterate over it, requesting data for each, creating a new card to add to the DOM.
           
-const followersArray = [
-  'tetondan',
-  'dustinmyers',
-  'justsml',
-  'luishrd',
-  'bigknell'
-];
+
 */
